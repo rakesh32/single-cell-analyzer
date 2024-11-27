@@ -1,0 +1,47 @@
+{
+  "n_obs": 5,
+  "n_vars": 4,
+  "obs_indices": [
+    "TTCGATTTCCCAGCGA-1_8",
+    "CTTTCGGTCATGGTAC-1_8",
+    "GACTATGTCAGCAGAG-1_8",
+    "GGACGTCCACTGAATC-1_8",
+    "AGATCGTTCTAGGCCG-1_8"
+  ],
+  "obs": {
+    "leiden": ["1", "2", "2", "3", "4"],
+    "cell_type": {
+      "0": "Macrophage",
+      "1": "Fibroblast",
+      "2": "CD4+ T-cell",
+      "3": "AT2",
+      "4": "AT1",
+      "5": "CD8+ T-cell",
+      "6": "Endothelial cell",
+      "7": "Plasma cell",
+      "8": "Macrophage",
+      "9": "AT2",
+      "10": "Fibroblast",
+      "11": "Fibroblast",
+      "12": "Macrophage",
+      "13": "Macrophage",
+      "14": "Airway epithelial",
+      "15": "Airway epithelial",
+      "16": "Monocyte",
+      "17": "Airway epithelial",
+      "18": "B-cell",
+      "19": "Aerocyte",
+      "20": "Airway epithelial",
+      "21": "Smooth muscle cell"
+    }
+  },
+  "obsm": {
+    "X_umap": [
+      [-3.7157764434814453, 4.475874423980713],
+      [-2.8380484580993652, 4.333745002746582],
+      [-3.427229881286621, 4.536843299865723],
+      [-3.5555920600891113, 4.46414852142334],
+      [-3.247864007949829, 4.463277339935303]
+    ]
+  }
+}
