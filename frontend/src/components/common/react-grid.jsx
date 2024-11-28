@@ -6,18 +6,22 @@ import {
   PointElement,
   Title,
   Tooltip,
+  registerables,
 } from 'chart.js';
-import React from 'react';
+import zoomPlugin from 'chartjs-plugin-zoom';
+import React, { useRef } from 'react';
 import { Scatter } from 'react-chartjs-2';
 
-// Register the necessary chart components
+// Register Chart.js components and plugins
 ChartJS.register(
   Tooltip,
   Legend,
   Title,
   CategoryScale,
   LinearScale,
-  PointElement
+  PointElement,
+  zoomPlugin,
+  ...registerables
 );
 
 // Function to generate distinct colors
@@ -46,6 +50,8 @@ const generateSummary = (data, leidenColors) => {
 };
 
 const AnnDataScatterPlot = ({ data }) => {
+  const chartRef = useRef(null);
+
   // Step 1: Extract unique leiden values
   const uniqueLeiden = [...new Set(data.obs.leiden)];
 
@@ -73,11 +79,11 @@ const AnnDataScatterPlot = ({ data }) => {
   const chartData = {
     datasets: [
       {
-        label: 'UMAP Coordinates',
+        label: 'your datapoints',
         data: points,
         backgroundColor: points.map((point) => point.backgroundColor), // Assign colors dynamically based on leiden
         borderColor: points.map((point) => point.backgroundColor), // Border color same as the background
-        pointRadius: 6, // Set the point radius
+        pointRadius: 2, // Set the point radius
       },
     ],
   };
@@ -93,6 +99,21 @@ const AnnDataScatterPlot = ({ data }) => {
             const point = context.raw;
             return `Cluster: ${point.leiden} | Obs Index: ${point.obsIndex} | Cell Type: ${point.cellType}`;
           },
+        },
+      },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'xy', // Enable panning in both directions
+        },
+        zoom: {
+          wheel: {
+            enabled: true, // Enable zooming with mouse wheel
+          },
+          pinch: {
+            enabled: true, // Enable zooming on pinch gestures
+          },
+          mode: 'xy', // Zoom in both directions
         },
       },
     },
@@ -114,14 +135,16 @@ const AnnDataScatterPlot = ({ data }) => {
         },
       },
     },
-    elements: {
-      point: {
-        radius: 6, // Set the point radius (size of the circles)
-      },
-    },
     layout: {
       padding: 0, // Remove any padding around the plot
     },
+  };
+
+  // Reset zoom handler
+  const resetZoom = () => {
+    if (chartRef.current) {
+      chartRef.current.resetZoom();
+    }
   };
 
   return (
@@ -129,7 +152,21 @@ const AnnDataScatterPlot = ({ data }) => {
       {/* UMAP Scatter Plot */}
       <div style={{ width: '75%' }}>
         <h1>UMAP Scatter Plot</h1>
-        <Scatter data={chartData} options={options} />
+        <Scatter ref={chartRef} data={chartData} options={options} />
+        <button
+          onClick={resetZoom}
+          style={{
+            marginTop: '10px',
+            padding: '8px 16px',
+            backgroundColor: '#007bff',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Reset View
+        </button>
       </div>
 
       {/* Right Panel for Data Summary */}

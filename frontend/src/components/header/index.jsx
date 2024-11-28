@@ -1,12 +1,20 @@
 import { SearchIcon } from 'lucide-react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { headerRoutes } from '../../constants/nav';
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#0043a4] flex px-[8em] justify-around items-center text-white p-4">
-      <span className="text-2xl font-bold">Logo</span>
+      <span className="text-2xl font-bold">
+        <img
+          src="/images/logo.png"
+          alt="Logo"
+          className="w-32 h-32 cursor-pointer"
+          onClick={() => navigate('/')}
+        />
+      </span>
       <div className="flex items-center gap-12 justify-between">
         <div className="flex gap-8 items-center font-bold">
           {headerRoutes.map((route, index) => (

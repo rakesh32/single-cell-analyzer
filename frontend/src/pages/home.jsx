@@ -1,8 +1,6 @@
 import { ChevronRightIcon } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AnnDataScatterPlot from '../components/common/react-grid';
-import data from '../constants/adata.json';
 import Card from './home/_components/card';
 
 const Home = () => {
@@ -126,7 +124,6 @@ const Home = () => {
             />
           </div>
         </div>
-        <AnnDataScatterPlot data={data} />
       </div>
     </div>
   );
