@@ -6,7 +6,7 @@ import { headerRoutes } from '../../constants/nav';
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <div className="bg-[#0043a4] flex px-[8em] justify-around items-center text-white p-4">
+    <div className="bg-[#0043a4] flex px-[8em] justify-around items-center text-white">
       <span className="text-2xl font-bold">
         <img
           src="/images/logo.png"

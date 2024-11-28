@@ -1,19 +1,11 @@
 
 export const headerRoutes = [
     {
-        name: 'Products',
-        href: '/products'
+        name: 'Start Analysis',
+        href: '/analysis'
     },
     {
         name: 'Resources',
         href: '/resources'
-    },
-    {
-        name: 'Support Hub',
-        href: '/support-hub'
-    },
-    {
-        name: 'Company',
-        href: '/company'
     },
 ]

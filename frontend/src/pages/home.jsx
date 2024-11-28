@@ -20,7 +20,7 @@ const Home = () => {
   ];
   return (
     <div>
-      <div className="bg-white w-full -mt-[19em] min-h-screen px-[20em]">
+      <div className="bg-white w-full -mt-[19em] min-h-screen px-[10em]">
         {/* Jump to section */}
         <div className="py-6 flex justify-between">
           {/* Jump to */}
@@ -35,10 +35,10 @@ const Home = () => {
             </div>
           </div>
           {/* Documentation Button */}
-          <button className="border-slate-400 flex items-center gap-2 border-[1px] px-4 py-2 rounded-md hover:bg-blue-200/50 text-blue-600 font-medium">
+          <Link to={'/resources'} className="border-slate-400 flex items-center gap-2 border-[1px] px-4 py-2 rounded-md hover:bg-blue-200/50 text-blue-600 font-medium">
             Go to Technical Documentation
             <ChevronRightIcon width={18} height={18} strokeWidth={3} />
-          </button>
+          </Link>
         </div>
         <hr />
         <div className="flex flex-col">

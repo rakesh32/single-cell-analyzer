@@ -11,6 +11,7 @@ import {
 import zoomPlugin from 'chartjs-plugin-zoom';
 import React, { useRef } from 'react';
 import { Scatter } from 'react-chartjs-2';
+import DefaultJSONData from '../../constants/adata.json'
 
 // Register Chart.js components and plugins
 ChartJS.register(
@@ -62,7 +63,17 @@ const AnnDataScatterPlot = ({ data }) => {
   }, {});
 
   // Step 3: Map X_umap coordinates and assign colors based on leiden
-  const points = data.obsm.X_umap.map((coords, index) => ({
+  const defaultPoints = DefaultJSONData.obsm.X_umap.map((coords, index) => ({
+    x: coords[0],
+    y: coords[1],
+    leiden: DefaultJSONData.obs.leiden[index],
+    obsIndex: DefaultJSONData.obs_indices[index],
+    cellType: DefaultJSONData.obs.cell_type[parseInt(DefaultJSONData.obs.leiden[index], 10)],
+    backgroundColor:
+      leidenColors[DefaultJSONData.obs.leiden[index]] || 'rgba(0, 0, 0, 0.5)', // Default color if not in the map
+  }));
+
+  const Lethalpoints = data.obsm.X_umap.map((coords, index) => ({
     x: coords[0],
     y: coords[1],
     leiden: data.obs.leiden[index],
@@ -79,10 +90,17 @@ const AnnDataScatterPlot = ({ data }) => {
   const chartData = {
     datasets: [
       {
-        label: 'your datapoints',
-        data: points,
-        backgroundColor: points.map((point) => point.backgroundColor), // Assign colors dynamically based on leiden
-        borderColor: points.map((point) => point.backgroundColor), // Border color same as the background
+        label: 'Lethal',
+        data: defaultPoints,
+        backgroundColor: defaultPoints.map((point) => point.backgroundColor), // Assign colors dynamically based on leiden
+        borderColor: defaultPoints.map((point) => point.backgroundColor), // Border color same as the background
+        pointRadius: 2, // Set the point radius
+      },
+      {
+        label: 'Your Data',
+        data: Lethalpoints,
+        backgroundColor: Lethalpoints.map((point) => point.backgroundColor), // Assign colors dynamically based on leiden
+        borderColor: Lethalpoints.map((point) => point.backgroundColor), // Border color same as the background
         pointRadius: 2, // Set the point radius
       },
     ],

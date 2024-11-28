@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone'; // Import react-dropzone
-import AnnDataScatterPlot from '../../components/common/react-grid';
+import AnnDataScatterPlot from '../../components/common/react-grid'
+import BaseLoading from './../../components/loader/config-loading';
+import uploadFileServices from './../../services/uploadFile.service';
+import { errorToast, successToast } from '../../components/toastNotifications';
 
 const AnalysisPage = () => {
   const [jsonData, setJsonData] = useState(null); // State to hold the uploaded JSON data
@@ -15,20 +18,24 @@ const AnalysisPage = () => {
   }, [jsonData]);
 
   // Function to handle file upload
-  const handleFileUpload = (acceptedFiles) => {
+  const handleFileUpload = async (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target.result);
-        setJsonData(data);
-      } catch (err) {
-        setError('Failed to parse JSON file.');
-      }
-    };
-    reader.readAsText(file);
+    setIsLoading(true)
+    const formData = new FormData();
+    formData.append("file", file);
+    try{
+      let res = await uploadFileServices.uploadFile(formData)
+      console.log(res);
+      if(res){
+        successToast("Video Upload Success")
+        setJsonData(res.data)
+      } 
+    }catch(e){
+      errorToast(e.response.data.message)
+    }finally{
+      setIsLoading(false)
+    }
   };
 
   // Function to simulate processing and show the spinner
@@ -43,7 +50,6 @@ const AnalysisPage = () => {
 
   // react-dropzone hook
   const { getRootProps, getInputProps } = useDropzone({
-    accept: '.json', // Only accept .json files
     onDrop: (acceptedFiles) => {
       handleFileUpload(acceptedFiles);
       processData();
@@ -68,16 +74,11 @@ const AnalysisPage = () => {
               <h2 className="text-2xl text-gray-700 mb-2">
                 Drag and drop a file here, or click to select one.
               </h2>
-              <p className="text-gray-500">Accepted file type: .json</p>
             </div>
           )}
 
           {/* Loading Spinner */}
-          {isLoading && (
-            <div className="flex justify-center mt-5">
-              <div className="spinner-border animate-spin border-4 rounded-full h-16 w-16 text-blue-500"></div>
-            </div>
-          )}
+          {isLoading && <BaseLoading loading={true}/>}
 
           {/* Error Message */}
           {error && (
